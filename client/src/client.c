@@ -1,4 +1,5 @@
 #include "client.h"
+#include "buffer.h"
 
 int main(void)
 {
@@ -12,12 +13,25 @@ int main(void)
 	t_log* logger;
 	t_config* config;
 
+
+	t_paquete_ejemplo*paquete;
+	t_buffer_ejemplo*buffer;
+	PCB_data pcb;
+	pcb.pid = 123;
+	pcb.program_counter = 12345;
+	pcb.vQuantum = 10;
+    pcb.regitros.AX = 1;
+    pcb.regitros.BX = 2;
+    pcb.regitros.CX = 3;
+    pcb.regitros.DX = 4;
+    pcb.regitros.EAX = 5;
+    pcb.regitros.EBX = 6;
+    pcb.regitros.ECX = 7;
+    pcb.regitros.EDX = 8;
+	
 	/* ---------------- LOGGING ---------------- */
 
 	logger = iniciar_logger();
-
-	// Usando el logger creado previamente
-	// Escribi: "Hola! Soy un log"
 	log_info(logger, "Soy un log");
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
@@ -35,24 +49,44 @@ int main(void)
 
 	/* ---------------- LEER DE CONSOLA ---------------- */
 
-	leer_consola(logger);
+	//leer_consola(logger);
 
 	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
 
 	// ADVERTENCIA: Antes de continuar, tenemos que asegurarnos que el servidor esté corriendo para poder conectarnos a él
 
 	// Creamos una conexión hacia el servidor
+	paquete=crear_paquete_ejemplo(pcb);
 	conexion = crear_conexion(ip, puerto);
+	//buffer = crear_buffer_de_PCB(pcb);
+	//send(conexion, &buffer, sizeof(t_buffer_ejemplo),0);
+	/*
+	size_t bytes;
 
-	// Enviamos al servidor el valor de CLAVE como mensaje
-	enviar_mensaje(valor,conexion);
+	int32_t handshake = 1;
+	int32_t result;
+
+	bytes = send(conexion, &handshake, sizeof(int32_t), 0);
+	bytes = recv(conexion, &result, sizeof(int32_t), MSG_WAITALL);
+
+	if (result == 0) {
+		printf("BIEN");
+	} else {
+		printf("ERROR");
+	}*/
+
+	serializar_y_enviar_paquete_ejemplo(paquete,conexion);
+	//Enviamos al servidor el valor de CLAVE como mensaje
+	//enviar_mensaje(valor,conexion);
 	// Armamos y enviamos el paquete
-	paquete(conexion);
+	//paquete(conexion);
+
+	eliminar_paquete_ejemplo(paquete);
 
 	terminar_programa(conexion, logger, config);
-
-	/*---------------------------------------------------PARTE 5-------------------------------------------------------------*/
-	// Proximamente
+	
+	free(ip);
+	free(puerto);
 }
 
 t_log* iniciar_logger(void)
