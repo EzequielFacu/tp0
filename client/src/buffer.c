@@ -7,14 +7,15 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB)
 
     uint32_t offset = 0;
     buffer->stream = malloc(buffer->size);
-    memcpy(buffer->stream + offset, &PCB.pid,sizeof(pid_t));
-    offset+=sizeof(pid_t);
-    
+    /*memcpy(buffer->stream + offset, &PCB.pid,sizeof(pid_t));
+    offset+=sizeof(pid_t);*/
+    offset = cargar_datos_a_Buffer(buffer, &PCB.pid, offset, sizeof(pid_t),0);
     /*memcpy(buffer->stream + offset, &PCB.program_counter, sizeof(uint32_t));
     offset+=sizeof(uint32_t);*/
     offset= cargar_uint32(buffer, &PCB.program_counter, offset,0);
-    memcpy(buffer->stream + offset, &PCB.vQuantum, sizeof(uint16_t));
-    offset+=sizeof(uint16_t);
+    /*memcpy(buffer->stream + offset, &PCB.vQuantum, sizeof(uint16_t));
+    offset+=sizeof(uint16_t);*/
+    offset = cargar_datos_a_Buffer(buffer,&PCB.vQuantum, offset,sizeof(uint16_t),0);
     /*memcpy(buffer->stream + offset, &PCB.regitros.AX, sizeof(uint8_t));
     offset+=sizeof(uint8_t);
     memcpy(buffer->stream + offset, &PCB.regitros.BX, sizeof(uint8_t));
@@ -57,7 +58,13 @@ uint32_t cargar_uint8 (t_buffer_ejemplo* buffer, uint8_t*data, uint32_t offset, 
     }
     return offset;
 }
-
+uint32_t cargar_datos_a_Buffer(t_buffer_ejemplo*buffer, void*data, uint32_t offset, size_t size, int numero){
+    memcpy(buffer->stream + offset, data, size);
+    if(numero == 0){
+        offset += size;
+    }
+    return offset;
+}
 /*
 void cargar_Buffer(t_buffer_ejemplo*buffer, void*data,size_t size, int numero){
     memcpy((char*)buffer->stream + buffer->size, data, size);

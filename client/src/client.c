@@ -49,6 +49,7 @@ int main(void)
 	
 	free(ip);
 	free(puerto);
+	return 0;
 }
 
 t_log* iniciar_logger(void)

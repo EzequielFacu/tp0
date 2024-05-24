@@ -32,7 +32,7 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB);
 
 t_paquete_ejemplo * crear_paquete_ejemplo(PCB_data PCB);
 
-//void cargar_Buffer(t_buffer_ejemplo*buffer, void*data,size_t size, int numero);
+uint32_t cargar_datos_a_Buffer(t_buffer_ejemplo*buffer, void*data, uint32_t offset, size_t size, int numero);
 
 uint32_t cargar_uint32 (t_buffer_ejemplo* buffer, uint32_t*data, uint32_t offset, int numero);
 
