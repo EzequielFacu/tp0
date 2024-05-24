@@ -10,7 +10,7 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB)
     
     cargar_datos(buffer->stream, &PCB.pid, &offset, sizeof(pid_t),0);
     cargar_uint32(buffer->stream, &PCB.program_counter, &offset,0);
-    cargar_datos(buffer->stream,&PCB.vQuantum, &offset, sizeof(uint16_t),0);
+    cargar_datos(buffer->stream, &PCB.vQuantum, &offset, sizeof(uint16_t),0);
     cargar_uint8(buffer->stream, &PCB.regitros.AX, &offset, 0);
     cargar_uint8(buffer->stream, &PCB.regitros.BX, &offset, 0);
     cargar_uint8(buffer->stream, &PCB.regitros.CX, &offset, 0);
@@ -52,7 +52,6 @@ void cargar_uint32(void* buffer, uint32_t*data, uint32_t* offset,int numero){
     if(numero == 0){
         *offset += sizeof(uint32_t);
     }
-    return offset;
 }
 
 void cargar_uint8 (void* buffer, uint8_t*data, uint32_t* offset, int numero){

@@ -32,4 +32,6 @@ typedef struct{
 
 void eliminar_paquete_ejemplo(t_paquete_ejemplo*paquete);
 
+void descargar_datos (void**stream, void*data, size_t size, int numero);
+
 PCB_data*PCB_ejemplo(t_buffer_ejemplo*buffer);

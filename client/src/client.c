@@ -11,7 +11,6 @@ int main(void)
 	t_log* logger;
 	t_config* config;
 	t_paquete_ejemplo*paquete;
-	t_buffer_ejemplo*buffer;
 	PCB_data pcb;
 
 	pcb.pid = 123;
