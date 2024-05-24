@@ -29,11 +29,6 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB)
     offset+=sizeof(uint32_t);
     memcpy(buffer->stream + offset, &PCB.regitros.EDX, sizeof(uint32_t));
 
-    /*cargar_Buffer(buffer, &PCB.pid, sizeof(pid_t), 0);
-    cargar_Buffer(buffer, &PCB.program_counter,sizeof(uint32_t),0);
-    cargar_Buffer(buffer, &PCB.vQuantum, sizeof(uint16_t),0);
-    cargar_Buffer(buffer, &PCB.regitros, sizeof(registros_generales),1);
-    */
     return buffer;
 }
 /*
@@ -53,12 +48,13 @@ t_paquete_ejemplo* crear_paquete_ejemplo (PCB_data PCB){
 
 void serializar_y_enviar_paquete_ejemplo(t_paquete_ejemplo* paquete, int socketCliente){
     void* a_enviar = malloc(paquete->buffer->size + sizeof(op_code) + sizeof(uint32_t)); 
-    //uint8 por el Codigo de operacion y uint 32 por el buffer
+    //sizeof(op_code) por el Codigo de operacion y uint 32 por el buffer
     
     int offset = 0;
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(op_code));
     offset += sizeof(op_code);
+
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
     offset += sizeof(uint32_t);
 
