@@ -3,7 +3,7 @@
 t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB)
 {
     t_buffer_ejemplo * buffer = malloc(sizeof(t_buffer_ejemplo));
-    buffer->size = sizeof(pid_t)+sizeof(uint32_t) + sizeof(uint16_t) + sizeof(uint8_t)*4 + sizeof(uint32_t)*4;
+    buffer->size = sizeof(pid_t)+ sizeof(uint16_t) + sizeof(uint8_t)*4 + sizeof(uint32_t)*5;
 
     uint32_t offset = 0;
     buffer->stream = malloc(buffer->size);

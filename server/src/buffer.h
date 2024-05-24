@@ -25,7 +25,7 @@ typedef struct{
     pid_t pid;
     uint32_t program_counter;
     uint16_t vQuantum;
-    registros_generales regitros; 
+    registros_generales * regitros; 
 }PCB_data;
 
 //t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB);
