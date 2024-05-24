@@ -50,6 +50,10 @@ int main(void) {
 		printf("ECX: %d\n", pcb->regitros->ECX);
 		printf("EDX: %d\n", pcb->regitros->EDX);
 	//eliminar_paquete_ejemplo(paquete);
+	free(paquete->buffer->stream);
+	free(paquete->buffer);
+	free(paquete);
+	free(pcb->regitros);
 	free(pcb);
 	}
 	/*
