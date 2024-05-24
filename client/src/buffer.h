@@ -32,11 +32,11 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB);
 
 t_paquete_ejemplo * crear_paquete_ejemplo(PCB_data PCB);
 
-uint32_t cargar_datos_a_Buffer(t_buffer_ejemplo*buffer, void*data, uint32_t offset, size_t size, int numero);
+uint32_t cargar_datos (void*buffer, void*data, uint32_t offset, size_t size, int numero);
 
-uint32_t cargar_uint32 (t_buffer_ejemplo* buffer, uint32_t*data, uint32_t offset, int numero);
+uint32_t cargar_uint32 (void* buffer, uint32_t*data, uint32_t offset, int numero);
 
-uint32_t cargar_uint8 (t_buffer_ejemplo* buffer, uint8_t*data, uint32_t offset, int numero);
+uint32_t cargar_uint8 (void* buffer, uint8_t*data, uint32_t offset, int numero);
 
 void serializar_y_enviar_paquete_ejemplo(t_paquete_ejemplo* paquete, int socketCliente);
 

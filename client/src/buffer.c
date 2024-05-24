@@ -8,38 +8,38 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB)
     uint32_t offset = 0;
     buffer->stream = malloc(buffer->size);
     
-    offset = cargar_datos_a_Buffer(buffer, &PCB.pid, offset, sizeof(pid_t),0);
-    offset= cargar_uint32(buffer, &PCB.program_counter, offset,0);
-    offset = cargar_datos_a_Buffer(buffer,&PCB.vQuantum, offset,sizeof(uint16_t),0);
-    offset = cargar_uint8(buffer, &PCB.regitros.AX, offset, 0);
-    offset = cargar_uint8(buffer, &PCB.regitros.BX, offset, 0);
-    offset = cargar_uint8(buffer, &PCB.regitros.CX, offset, 0);
-    offset = cargar_uint8(buffer, &PCB.regitros.DX, offset, 0);
-    offset = cargar_uint32(buffer, &PCB.regitros.EAX, offset, 0);
-    offset = cargar_uint32(buffer, &PCB.regitros.EBX, offset, 0);
-    offset = cargar_uint32(buffer, &PCB.regitros.ECX, offset, 0);
-    offset = cargar_uint32(buffer, &PCB.regitros.EDX, offset, 1);
+    offset = cargar_datos(buffer->stream, &PCB.pid, offset, sizeof(pid_t),0);
+    offset = cargar_uint32(buffer->stream, &PCB.program_counter, offset,0);
+    offset = cargar_datos(buffer->stream,&PCB.vQuantum, offset,sizeof(uint16_t),0);
+    offset = cargar_uint8(buffer->stream, &PCB.regitros.AX, offset, 0);
+    offset = cargar_uint8(buffer->stream, &PCB.regitros.BX, offset, 0);
+    offset = cargar_uint8(buffer->stream, &PCB.regitros.CX, offset, 0);
+    offset = cargar_uint8(buffer->stream, &PCB.regitros.DX, offset, 0);
+    offset = cargar_uint32(buffer->stream, &PCB.regitros.EAX, offset, 0);
+    offset = cargar_uint32(buffer->stream, &PCB.regitros.EBX, offset, 0);
+    offset = cargar_uint32(buffer->stream, &PCB.regitros.ECX, offset, 0);
+    offset = cargar_uint32(buffer->stream, &PCB.regitros.EDX, offset, 1);
     
     return buffer;
 }
 
-uint32_t cargar_uint32(t_buffer_ejemplo* buffer, uint32_t*data, uint32_t offset,int numero){
-    memcpy(buffer->stream + offset, data, sizeof(uint32_t));
+uint32_t cargar_uint32(void* buffer, uint32_t*data, uint32_t offset,int numero){
+    memcpy(buffer + offset, data, sizeof(uint32_t));
     if(numero == 0){
         offset += sizeof(uint32_t);
     }
     return offset;
 }
 
-uint32_t cargar_uint8 (t_buffer_ejemplo* buffer, uint8_t*data, uint32_t offset, int numero){
-     memcpy(buffer->stream + offset, data, sizeof(uint8_t));
+uint32_t cargar_uint8 (void* buffer, uint8_t*data, uint32_t offset, int numero){
+     memcpy(buffer + offset, data, sizeof(uint8_t));
     if(numero == 0){
         offset += sizeof(uint8_t);
     }
     return offset;
 }
-uint32_t cargar_datos_a_Buffer(t_buffer_ejemplo*buffer, void*data, uint32_t offset, size_t size, int numero){
-    memcpy(buffer->stream + offset, data, size);
+uint32_t cargar_datos (void*buffer, void*data, uint32_t offset, size_t size, int numero){
+    memcpy(buffer + offset, data, size);
     if(numero == 0){
         offset += size;
     }
@@ -57,14 +57,12 @@ void serializar_y_enviar_paquete_ejemplo(t_paquete_ejemplo* paquete, int socketC
     void* a_enviar = malloc(paquete->buffer->size + sizeof(op_code) + sizeof(uint32_t)); 
     //sizeof(op_code) por el Codigo de operacion y uint 32 por el buffer
     
-    int offset = 0;
+    uint32_t offset = 0;
 
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(op_code));
-    offset += sizeof(op_code);
+    offset = cargar_datos(a_enviar,&(paquete->codigo_operacion),offset,sizeof(op_code),0);
 
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-
+    offset = cargar_datos(a_enviar, &(paquete->buffer->size), offset, sizeof(uint32_t), 0);
+    
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     send(socketCliente, a_enviar, paquete->buffer->size + sizeof(op_code) + sizeof(uint32_t), 0);
