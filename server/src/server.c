@@ -12,15 +12,22 @@ int main(void) {
 	t_paquete_ejemplo * paquete = malloc(sizeof(t_paquete_ejemplo));
 	paquete->buffer = NULL;
 	paquete->buffer = malloc(sizeof(t_buffer_ejemplo));
+
+	//inicializo el paquete
+
 	PCB_data*pcb = malloc(sizeof(PCB_data));
 
 	recv(cliente_fd, &(paquete->codigo_operacion),sizeof(op_code),MSG_WAITALL);
 	recv(cliente_fd, &(paquete->buffer->size), sizeof(uint32_t),0);
 	paquete->buffer->stream =  malloc(paquete->buffer->size);
 	recv(cliente_fd, paquete->buffer->stream, paquete->buffer->size,0);
-	
+
+	//Recivo en orden c/u de los datos en sus correspondientes lugares
+
 	if(paquete->codigo_operacion == PAQUETE){
 		pcb = PCB_ejemplo(paquete->buffer);
+		//me aseguro de que recive el codigo de operacion de forma correcta
+
 		printf("PCB Data:\n");
 		printf("PID: %d\n", pcb->pid);	
 		printf("Program Counter: %d\n", pcb->program_counter);
@@ -34,6 +41,9 @@ int main(void) {
 		printf("EBX: %d\n", pcb->regitros->EBX);
 		printf("ECX: %d\n", pcb->regitros->ECX);
 		printf("EDX: %d\n", pcb->regitros->EDX);
+		
+		//me aseguro de que cada dato fue recivido correctamente
+
 		eliminar_paquete_ejemplo(paquete);
 	}
 	free(pcb->regitros);

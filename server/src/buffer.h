@@ -28,7 +28,7 @@ typedef struct{
     registros_generales * regitros; 
 }PCB_data;
 
-//void cargar_Buffer(t_buffer_ejemplo*buffer, void*data,size_t size, int numero);
+//en este caso uso punteros a registros, habra que ver si se puede sin ellos y si el error era unicamente el no haber inicializado paquete y buffer
 
 void eliminar_paquete_ejemplo(t_paquete_ejemplo*paquete);
 

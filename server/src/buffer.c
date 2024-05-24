@@ -34,5 +34,7 @@ PCB_data*PCB_ejemplo(t_buffer_ejemplo*buffer){
     stream += sizeof(uint32_t);
 	memcpy(&PCB->regitros->EDX,stream, sizeof(uint32_t));
    
+    //se recibe uno por uno segun el "tamaño" o "peso" de cada dato segun el orden en el que fueron enviados
+
     return PCB;
 }
