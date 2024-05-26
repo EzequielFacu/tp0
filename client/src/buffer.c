@@ -70,7 +70,7 @@ void cargar_datos (void*buffer, void*data, uint32_t*offset, size_t size, int num
 
 t_paquete_ejemplo* crear_paquete_ejemplo (PCB_data* PCB){
     t_paquete_ejemplo* paquete = malloc(sizeof(t_paquete_ejemplo));
-    paquete->codigo_operacion = PAQUETE;
+    paquete->codigo_operacion = PAQUETE_A;
     paquete->buffer = crear_buffer_de_PCB(PCB);
     return paquete;
 }

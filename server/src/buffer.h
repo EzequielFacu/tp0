@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <pthread.h>
 
 typedef struct {
     uint32_t size; // Tamaño del payload
@@ -40,6 +41,6 @@ void eliminar_paquete_ejemplo(t_paquete_ejemplo*paquete);
 
 void descargar_datos (void**stream, void*data, size_t size, int numero);
 
-PCB_data*recibir_PCB(t_buffer_ejemplo*buffer, PCB_data * PCB);
+PCB_data*deserializar_PCB(t_buffer_ejemplo*buffer, PCB_data * PCB);
 
 void recibir_paquete_PCB(PCB_data * pcb, t_paquete_ejemplo * paquete);
