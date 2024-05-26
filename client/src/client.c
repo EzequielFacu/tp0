@@ -11,41 +11,36 @@ int main(void)
 	t_log* logger;
 	t_config* config;
 	t_paquete_ejemplo*paquete;
-	PCB_data pcb;
-
-	pcb.pid = 123;
-	pcb.program_counter = 12345;
-	pcb.vQuantum = 10;
-    pcb.regitros.AX = 1;
-    pcb.regitros.BX = 2;
-    pcb.regitros.CX = 3;
-    pcb.regitros.DX = 4;
-    pcb.regitros.EAX = 5;
-    pcb.regitros.EBX = 6;
-    pcb.regitros.ECX = 7;
-    pcb.regitros.EDX = 8;
+	PCB_data * pcb;
 	
+	pcb = crear_PCB_A(pcb);
+
 	logger = iniciar_logger();
 	log_info(logger, "Soy un log");
 
 	config = iniciar_config();
 
-	valor=config_get_string_value(config,"CLAVE");
-	ip=config_get_string_value(config, "IP");
-	puerto=config_get_string_value(config,"PUERTO");
+	valor = config_get_string_value(config,"CLAVE");
+	ip = config_get_string_value(config, "IP");
+	puerto = config_get_string_value(config,"PUERTO");
 
 	log_info(logger,valor);
 
-	paquete=crear_paquete_ejemplo(pcb);
+	paquete = crear_paquete_ejemplo(pcb);
 
 	conexion = crear_conexion(ip, puerto);
 
 	serializar_y_enviar_paquete_ejemplo(paquete,conexion);
 	
+	log_info(logger,"Se envio el paquete");
+
 	eliminar_paquete_ejemplo(paquete);
 
 	terminar_programa(conexion, logger, config);
 	
+	free(pcb->regitros);
+	free(pcb);
+
 	free(ip);
 	free(puerto);
 	return 0;

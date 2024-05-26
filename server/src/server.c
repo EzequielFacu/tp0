@@ -3,52 +3,35 @@
 #include <unistd.h>
 
 int main(void) {
+	PCB_data * pcb;
+
+	t_paquete_ejemplo * paquete;
+
 	logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
 
 	int server_fd = iniciar_servidor();
-	log_info(logger, "Servidor listo para recibir al cliente");
-	int cliente_fd = esperar_cliente(server_fd);
 	
-	t_paquete_ejemplo * paquete = malloc(sizeof(t_paquete_ejemplo));
-	paquete->buffer = NULL;
-	paquete->buffer = malloc(sizeof(t_buffer_ejemplo));
+	log_info(logger, "Servidor listo para recibir al cliente");
+	
+	int cliente_fd = esperar_cliente(server_fd);
 
 	//inicializo el paquete
+	
+	pcb = inicializar_PCB();
 
-	PCB_data*pcb = malloc(sizeof(PCB_data));
+	paquete = inicializar_paquete();
 
-	recv(cliente_fd, &(paquete->codigo_operacion),sizeof(op_code),MSG_WAITALL);
-	recv(cliente_fd, &(paquete->buffer->size), sizeof(uint32_t),0);
-	paquete->buffer->stream =  malloc(paquete->buffer->size);
-	recv(cliente_fd, paquete->buffer->stream, paquete->buffer->size,0);
+	paquete = recibir_paquete_ejemplo(paquete, cliente_fd);
 
 	//Recivo en orden c/u de los datos en sus correspondientes lugares
 
 	if(paquete->codigo_operacion == PAQUETE){
-		pcb = PCB_ejemplo(paquete->buffer);
-		//me aseguro de que recive el codigo de operacion de forma correcta
-
-		printf("PCB Data:\n");
-		printf("PID: %d\n", pcb->pid);	
-		printf("Program Counter: %d\n", pcb->program_counter);
-		printf("vQuantum: %d\n", pcb->vQuantum);
-		printf("Registros Generales:\n");
-		printf("AX: %d\n", pcb->regitros->AX);
-		printf("BX: %d\n", pcb->regitros->BX);
-		printf("CX: %d\n", pcb->regitros->CX);
-		printf("DX: %d\n", pcb->regitros->DX);
-		printf("EAX: %d\n", pcb->regitros->EAX);
-		printf("EBX: %d\n", pcb->regitros->EBX);
-		printf("ECX: %d\n", pcb->regitros->ECX);
-		printf("EDX: %d\n", pcb->regitros->EDX);
-		
-		//me aseguro de que cada dato fue recivido correctamente
-
-		eliminar_paquete_ejemplo(paquete);
+		recibir_paquete_PCB(pcb,paquete);
 	}
-	free(pcb->regitros);
-	free(pcb);
-	return 0;
+	eliminar_paquete_ejemplo(paquete);
+    free(pcb->regitros);
+    free(pcb);
+	return  EXIT_SUCCESS;
 }
 
 void iterator(char* value) {

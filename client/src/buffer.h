@@ -25,12 +25,14 @@ typedef struct{
     pid_t pid;
     uint32_t program_counter;
     uint16_t vQuantum;
-    registros_generales regitros; 
+    registros_generales*regitros; 
 }PCB_data;
 
-t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data PCB);
+t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data* PCB);
 
-t_paquete_ejemplo * crear_paquete_ejemplo(PCB_data PCB);
+t_paquete_ejemplo * crear_paquete_ejemplo(PCB_data* PCB);
+
+PCB_data* crear_PCB_A(PCB_data*pcb);
 
 void cargar_datos (void*buffer, void*data, uint32_t*offset, size_t size, int numero);
 
