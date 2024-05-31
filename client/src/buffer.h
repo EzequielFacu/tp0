@@ -34,6 +34,10 @@ t_paquete_ejemplo * crear_paquete_ejemplo(PCB_data* PCB);
 
 PCB_data* crear_PCB_A(PCB_data*pcb);
 
+t_paquete_ejemplo* inicializar_paquete_A();
+
+t_buffer_ejemplo* inicializar_buffer_ejemplo();
+
 void cargar_datos (void*buffer, void*data, uint32_t*offset, size_t size, int numero);
 
 void cargar_uint32 (void* buffer, uint32_t*data, uint32_t *offset, int numero);

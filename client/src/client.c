@@ -12,13 +12,14 @@ int main(void)
 	t_config* config;
 	t_paquete_ejemplo*paquete;
 	PCB_data * pcb;
-	
-	pcb = crear_PCB_A(pcb);
 
 	logger = iniciar_logger();
-	log_info(logger, "Soy un log");
 
 	config = iniciar_config();
+
+	log_info(logger, "Soy un log");
+
+	pcb = crear_PCB_A(pcb);
 
 	valor = config_get_string_value(config,"CLAVE");
 	ip = config_get_string_value(config, "IP");
@@ -32,7 +33,7 @@ int main(void)
 
 	serializar_y_enviar_paquete_ejemplo(paquete,conexion);
 	
-	log_info(logger,"Se envio el paquete");
+	log_info(logger,"Se envio el paquete A");
 
 	eliminar_paquete_ejemplo(paquete);
 

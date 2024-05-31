@@ -1,5 +1,5 @@
 #include "utils.h"
-#include <pthread.h>
+
 
 typedef struct {
     uint32_t size; // Tamaño del payload
