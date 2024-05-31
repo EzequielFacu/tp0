@@ -6,12 +6,10 @@ int main(void)
 	int conexion;
 	char* ip;
 	char* puerto;
-	char* valor;
+	//char* valor;
 
 	t_log* logger;
 	t_config* config;
-	t_paquete_ejemplo*paquete;
-	PCB_data * pcb;
 
 	logger = iniciar_logger();
 
@@ -19,17 +17,51 @@ int main(void)
 
 	log_info(logger, "Soy un log");
 
-	pcb = crear_PCB_A(pcb);
-
-	valor = config_get_string_value(config,"CLAVE");
+	//valor = config_get_string_value(config,"CLAVE");
 	ip = config_get_string_value(config, "IP");
 	puerto = config_get_string_value(config,"PUERTO");
 
-	log_info(logger,valor);
-
-	paquete = crear_paquete_ejemplo(pcb);
+	bool verdadero = true;
 
 	conexion = crear_conexion(ip, puerto);
+
+	while(verdadero){
+		int numero;
+		printf("Elije un proceso a ejecutar:\n");
+		printf("1. Proceso A: Enviar PCB predeterminado\n");
+		printf("2. Proceso B: \n");
+		printf("3. Proceso C: \n");
+		printf("4. Finalizar programa\n");
+
+		scanf("%d", &numero);
+
+		switch (numero){
+		case 1:
+			log_info(logger, "Se inicia el Proceso A");
+			crear_proceso_A(logger, conexion);
+			break;
+		case 2:
+			log_info(logger, "Se inicia el Proceso B");
+			break;
+		case 3:
+			log_info(logger, "Se inicia el Proceso C");
+			break;
+		case 4: 
+			log_info(logger, "Finalizacion de CLIENTE");
+			verdadero = !verdadero;
+			break;
+		default:
+			log_info(logger, "Finalizacion Forzada de CLIENTE");
+			free(ip);
+			free(puerto);
+			terminar_programa(conexion, logger, config);
+			break;
+		}
+	}
+	/*
+	pcb = crear_PCB_A(pcb);
+
+	paquete = crear_paquete_ejemplo(pcb);
 
 	serializar_y_enviar_paquete_ejemplo(paquete,conexion);
 	
@@ -37,13 +69,14 @@ int main(void)
 
 	eliminar_paquete_ejemplo(paquete);
 
-	terminar_programa(conexion, logger, config);
-	
 	free(pcb->regitros);
 	free(pcb);
-
+	*/
 	free(ip);
 	free(puerto);
+
+	terminar_programa(conexion, logger, config);
+	
 	return 0;
 }
 
@@ -66,7 +99,7 @@ t_config* iniciar_config(void)
 		}
 	return nuevo_config;
 }
-
+/*
 void leer_consola(t_log* logger)
 {
 	char* leido;
@@ -91,7 +124,7 @@ void leer_consola(t_log* logger)
 	// ¡No te olvides de liberar las lineas antes de regresar!
 
 }
-
+*/
 void paquete(int conexion)
 {
 	// Ahora toca lo divertido!

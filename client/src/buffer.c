@@ -23,16 +23,6 @@ t_buffer_ejemplo * crear_buffer_de_PCB(PCB_data*PCB)
     return buffer;
 }
 
-t_paquete_ejemplo* inicializar_paquete_ejemplo(){
-    t_paquete_ejemplo * paquete = malloc(sizeof(t_paquete_ejemplo));
-    return paquete;
-}
-
-t_buffer_ejemplo * inicializar_buffer_ejemplo(){
-    t_buffer_ejemplo* buffer = malloc(sizeof(t_buffer_ejemplo));
-    return buffer;
-}
-
 void serializar_y_enviar_paquete_ejemplo(t_paquete_ejemplo* paquete, int socketCliente){
     void* a_enviar = malloc(paquete->buffer->size + sizeof(op_code) + sizeof(uint32_t)); 
     //sizeof(op_code) por el Codigo de operacion y uint 32 por el buffer
@@ -78,7 +68,7 @@ void cargar_datos (void*buffer, void*data, uint32_t*offset, size_t size, int num
     }
 }
 
-t_paquete_ejemplo* crear_paquete_A (PCB_data* PCB){
+t_paquete_ejemplo* crear_paquete_ejemplo (PCB_data* PCB){
     t_paquete_ejemplo* paquete = malloc(sizeof(t_paquete_ejemplo));
     paquete->codigo_operacion = PAQUETE_A;
     paquete->buffer = crear_buffer_de_PCB(PCB);
