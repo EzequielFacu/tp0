@@ -78,7 +78,7 @@ t_paquete_ejemplo * inicializar_paquete(){
 
 t_paquete_ejemplo * recibir_paquete_ejemplo (t_paquete_ejemplo * paquete, int cliente_fd){
     recv(cliente_fd, &(paquete->codigo_operacion),sizeof(op_code),0);
-	recv(cliente_fd, &(paquete->buffer->size), sizeof(uint32_t),0);
+    recv(cliente_fd, &(paquete->buffer->size), sizeof(uint32_t),0);
 	paquete->buffer->stream =  malloc(paquete->buffer->size);
 	recv(cliente_fd, paquete->buffer->stream, paquete->buffer->size,0);
     return paquete;

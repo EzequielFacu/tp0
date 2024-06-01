@@ -36,26 +36,24 @@ int main(void)
 		scanf("%d", &numero);
 
 		switch (numero){
-		case 1:
-			log_info(logger, "Se inicia el Proceso A");
-			crear_proceso_A(logger, conexion);
-			break;
-		case 2:
-			log_info(logger, "Se inicia el Proceso B");
-			break;
-		case 3:
-			log_info(logger, "Se inicia el Proceso C");
-			break;
-		case 4: 
-			log_info(logger, "Finalizacion de CLIENTE");
-			verdadero = !verdadero;
-			break;
-		default:
-			log_info(logger, "Finalizacion Forzada de CLIENTE");
-			free(ip);
-			free(puerto);
-			terminar_programa(conexion, logger, config);
-			break;
+			case 1:
+				log_info(logger, "Se inicia el Proceso A");
+				crear_proceso_A(logger, conexion);
+				break;
+			case 2:
+				log_info(logger, "Se inicia el Proceso B");
+				break;
+			case 3:
+				log_info(logger, "Se inicia el Proceso C");
+				break;
+			case 4: 
+				log_info(logger, "Finalizacion de CLIENTE");
+				verdadero = !verdadero;
+				break;
+			default:
+				log_info(logger, "Finalizacion Forzada de CLIENTE");
+				terminar_programa(conexion, logger, config);
+				break;
 		}
 	}
 	/*
@@ -72,8 +70,6 @@ int main(void)
 	free(pcb->regitros);
 	free(pcb);
 	*/
-	free(ip);
-	free(puerto);
 
 	terminar_programa(conexion, logger, config);
 	

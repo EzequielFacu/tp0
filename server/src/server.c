@@ -7,34 +7,48 @@ void * atender_cliente(void *cliente){
 	
 	int cliente_fd = *(int*)cliente;
 
-	PCB_data * pcb;
-
 	free(cliente);
 
 	t_paquete_ejemplo * paquete;
-	
-	pcb = inicializar_PCB();
-
 	paquete = inicializar_paquete();
 
+	t_buffer_ejemplo* t_buffer_ejemplo = malloc(sizeof());
+	bool verdad = true;
 	//Recivo en orden c/u de los datos en sus correspondientes lugares
-	
-	paquete = recibir_paquete_ejemplo(paquete, cliente_fd);
-	switch (paquete->codigo_operacion){
-		case PAQUETE_A:
-			log_info(logger, "PAQUETE A recibido");
-			recibir_paquete_PCB(pcb,paquete);
-			break;
-		case PAQUETE_B:
-			log_info(logger, "PAQUETE B recibido");
-			break;
-		default:
-			log_info(logger, "error en el tipo de paquete");
-			break;
+	while (verdad){
+		paquete = recibir_paquete_ejemplo(paquete, cliente_fd);
+		switch (paquete->codigo_operacion){
+			case PAQUETE_A:
+				PCB_data * pcb;
+
+				pcb = inicializar_PCB();
+
+				log_info(logger, "PAQUETE A recibido");
+				
+				recibir_paquete_PCB(pcb,paquete);
+				
+				free(pcb->regitros);
+				free(pcb);
+				log_info(logger, "PAQUETE A DESTRUIDO");
+				break;
+			case PAQUETE_B:
+				log_info(logger, "PAQUETE B recibido");
+				break;
+			case PAQUETE_C:
+				log_info(logger, "PAQUETE C recibido");
+				break;
+			case 0:
+				log_info(logger, "FINALIZACION DE EJECUCION");
+				eliminar_paquete_ejemplo(paquete);
+				verdad = !verdad;
+				break;
+			default:
+				log_info(logger, "error en el tipo de paquete");
+				break;
+		}
 	}
 	eliminar_paquete_ejemplo(paquete);
-	free(pcb->regitros);
-	free(pcb);
+
 	pthread_exit(NULL);
 }
 
