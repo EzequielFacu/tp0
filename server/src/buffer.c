@@ -43,8 +43,8 @@ void descargar_datos (void**stream, void*data, size_t size, int numero){
     }
 }
 
-void recibir_paquete_PCB(PCB_data * pcb, t_paquete_ejemplo * paquete){
-    pcb = deserializar_PCB(paquete->buffer, pcb);
+void recibir_paquete_PCB(PCB_data * pcb, t_buffer_ejemplo * buffer){
+    pcb = deserializar_PCB(buffer, pcb);
 		//me aseguro de que recive el codigo de operacion de forma correcta
 
 	printf("PCB Data:\n");
@@ -82,4 +82,11 @@ t_paquete_ejemplo * recibir_paquete_ejemplo (t_paquete_ejemplo * paquete, int cl
 	paquete->buffer->stream =  malloc(paquete->buffer->size);
 	recv(cliente_fd, paquete->buffer->stream, paquete->buffer->size,0);
     return paquete;
+}
+
+void eliminar_buffer_y_PCB(t_buffer_ejemplo*buffer, PCB_data*pcb){
+    free(buffer->stream);
+    free(buffer);
+    free(pcb->regitros);
+    free(pcb);
 }

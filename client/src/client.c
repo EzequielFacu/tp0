@@ -1,6 +1,8 @@
 #include "client.h"
 #include "buffer.h"
 
+void crear_proceso_A(t_log * logger, int conexion);
+
 int main(void)
 {
 	int conexion;
@@ -48,6 +50,7 @@ int main(void)
 				break;
 			case 4: 
 				log_info(logger, "Finalizacion de CLIENTE");
+				close(conexion);
 				verdadero = !verdadero;
 				break;
 			default:
@@ -151,7 +154,7 @@ void paquete(int conexion)
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
-	liberar_conexion(conexion);
+	//liberar_conexion(conexion);
 	log_destroy(logger);
 	config_destroy(config);
 }

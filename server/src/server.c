@@ -1,7 +1,14 @@
 #include "server.h"
 #include "buffer.h"
 
-
+op_code operacion_paquete(int cliente){
+	op_code code;
+	if (recv(cliente, &code, sizeof(op_code),0)>0){
+		return code;
+	}else{
+		return FIN_DEL_PROGRAMA;
+	}
+}	
 
 void * atender_cliente(void *cliente){
 	
@@ -9,26 +16,33 @@ void * atender_cliente(void *cliente){
 
 	free(cliente);
 
-	t_paquete_ejemplo * paquete;
-	paquete = inicializar_paquete();
-
-	t_buffer_ejemplo* t_buffer_ejemplo = malloc(sizeof());
+	//t_paquete_ejemplo * paquete;
+	//paquete = inicializar_paquete();
+	
 	bool verdad = true;
 	//Recivo en orden c/u de los datos en sus correspondientes lugares
 	while (verdad){
-		paquete = recibir_paquete_ejemplo(paquete, cliente_fd);
-		switch (paquete->codigo_operacion){
+		//paquete = recibir_paquete_ejemplo(paquete, cliente_fd);
+		op_code code = operacion_paquete(cliente_fd);
+		
+		switch (code){
 			case PAQUETE_A:
 				PCB_data * pcb;
 
+				t_buffer_ejemplo * buffer = malloc(sizeof(uint32_t));
+				
 				pcb = inicializar_PCB();
+
+				recv(cliente_fd, &(buffer->size), sizeof(uint32_t),0);
+				buffer->stream = malloc(buffer->size);
+				recv(cliente_fd, buffer->stream, buffer->size,0); 
 
 				log_info(logger, "PAQUETE A recibido");
 				
-				recibir_paquete_PCB(pcb,paquete);
+				recibir_paquete_PCB(pcb,buffer);
 				
-				free(pcb->regitros);
-				free(pcb);
+				eliminar_buffer_y_PCB(buffer,pcb);
+
 				log_info(logger, "PAQUETE A DESTRUIDO");
 				break;
 			case PAQUETE_B:
@@ -37,17 +51,17 @@ void * atender_cliente(void *cliente){
 			case PAQUETE_C:
 				log_info(logger, "PAQUETE C recibido");
 				break;
-			case 0:
+			case FIN_DEL_PROGRAMA:
 				log_info(logger, "FINALIZACION DE EJECUCION");
-				eliminar_paquete_ejemplo(paquete);
+				//eliminar_paquete_ejemplo(paquete);
 				verdad = !verdad;
 				break;
 			default:
 				log_info(logger, "error en el tipo de paquete");
+				verdad = !verdad;
 				break;
 		}
 	}
-	eliminar_paquete_ejemplo(paquete);
 
 	pthread_exit(NULL);
 }

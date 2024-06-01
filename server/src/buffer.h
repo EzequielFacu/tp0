@@ -37,10 +37,12 @@ t_paquete_ejemplo * inicializar_paquete();
 
 t_paquete_ejemplo * recibir_paquete_ejemplo(t_paquete_ejemplo * paquete, int cliente_fd);
 
-void eliminar_paquete_ejemplo(t_paquete_ejemplo*paquete);
+void eliminar_paquete_ejemplo(t_paquete_ejemplo * paquete);
 
 void descargar_datos (void**stream, void*data, size_t size, int numero);
 
 PCB_data*deserializar_PCB(t_buffer_ejemplo*buffer, PCB_data * PCB);
 
-void recibir_paquete_PCB(PCB_data * pcb, t_paquete_ejemplo * paquete);
+void recibir_paquete_PCB(PCB_data * pcb, t_buffer_ejemplo * paquete);
+
+void eliminar_buffer_y_PCB(t_buffer_ejemplo* buffer, PCB_data * pcb); 

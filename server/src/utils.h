@@ -20,7 +20,8 @@ typedef enum
 	PAQUETE,
 	PAQUETE_A,
     PAQUETE_B,
-    PAQUETE_C
+    PAQUETE_C,
+	FIN_DEL_PROGRAMA
 }op_code;
 
 extern t_log* logger;
